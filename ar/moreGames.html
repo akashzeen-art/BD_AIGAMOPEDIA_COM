@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>More Games - AiGameopedia</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="#303E50">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="author" content="AiGameopedia">
+    <meta name="description" content="AiGameopedia - More Games">
+    <meta name="keywords" content="AiGameopedia, Games">
+    <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="icon" href="./images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Playfair+Display&family=Roboto+Slab&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="./country.js"></script>
+    <script src="./i18n/en.js"></script>
+    <script src="./i18n/ar.js"></script>
+    <script src="./i18n.js"></script>
+    <script type="module" src="./moreGames.js"></script>
+  </head>
+  <body>
+    <nav style="display: flex; justify-content: space-between; align-items: center; gap: 50px;">
+      <a class="logo" href="./index.html" aria-label="website logo">
+        <img src="./image.png" alt="AiGameopedia logo" style="height: 80px; width: auto;" data-i18n-alt="logoAlt">
+      </a>
+      <div class="navBig">
+        <a href="./index.html" class="navEach" id="navLink1" aria-label="about nav" data-i18n="navHome">Home</a>
+        <a href="./moreGames.html" class="navEach" id="navLink2" aria-label="more games nav" data-i18n="navMoreGames">More Games</a>
+        <a href="./myAccount.html" class="navEach" id="navLink3" aria-label="account nav" data-i18n="navMyAccount">My Account</a>
+        <a href="./termsAndConditions.html" class="navEach" id="navLink4" aria-label="t&c nav" data-i18n="navTC">T & C</a>
+        <button id="langToggle" aria-label="toggle language" onclick="toggleLang()" style="background:transparent;border:2px solid #ffc800;color:#ffc800;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:0.5rem;cursor:pointer;letter-spacing:0.05em;"></button>
+      </div>
+      <div class="navSmall">
+        <div class="hamburger">
+          <span class="line" style="background-color: beige;"></span>
+          <span class="line" style="background-color: beige;"></span>
+          <span class="line" style="background-color: beige;"></span>
+          <span class="line" style="background-color: beige;"></span>
+        </div>
+        <div class="subMenu">
+          <a href="./index.html" class="navEach" id="navLink5" aria-label="about nav" data-i18n="navHome">Home</a>
+          <a href="./moreGames.html" class="navEach" id="navLink6" aria-label="more games nav" data-i18n="navMoreGames">More Games</a>
+          <a href="./myAccount.html" class="navEach" id="navLink7" aria-label="account nav" data-i18n="navMyAccount">My Account</a>
+          <a href="./termsAndConditions.html" class="navEach" id="navLink8" aria-label="t&c nav" data-i18n="navTC">T & C</a>
+          <button id="langToggleMobile" aria-label="toggle language" onclick="toggleLang()" style="background:transparent;border:2px solid #ffc800;color:#ffc800;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:0.5rem;cursor:pointer;letter-spacing:0.05em;margin-top:0.5rem;"></button>
+        </div>
+      </div>
+    </nav>
+    <script>
+      function toggleLang() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('lang') === 'en') params.delete('lang');
+        else params.set('lang', 'en');
+        const qs = params.toString();
+        window.location.href = window.location.pathname + (qs ? '?' + qs : '');
+      }
+      (function setLangBtn() {
+        const isAr = typeof window.getLocale === 'function' && window.getLocale() === 'ar';
+        const label = isAr ? 'EN' : 'عربي';
+        ['langToggle','langToggleMobile'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = label;
+        });
+      })();
+    </script>
+    <div id="msisdnPopup" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s ease;">
+      <div style="background:#fff;border-radius:1.2rem;width:100%;max-width:360px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,0.4);position:relative;margin:1rem;">
+        <button id="closeMsisdnPopup" aria-label="close popup" style="position:absolute;top:0.75rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#374151;line-height:1;">×</button>
+        <div style="text-align:center;margin-bottom:1.25rem;">
+          <h2 data-i18n="popupTitle" style="font-family:'Josefin Sans',sans-serif;font-weight:900;font-size:1.2rem;text-transform:uppercase;color:#00122d;margin:0;">AiGamopedia</h2>
+          <p data-i18n="popupSubtitle" style="font-family:'Josefin Sans',sans-serif;font-size:0.8rem;color:rgba(0,0,0,0.5);margin-top:0.25rem;">Enter your mobile number to access games</p>
+        </div>
+        <form id="msisdnForm">
+          <label data-i18n="popupLabel" style="display:block;font-family:'Josefin Sans',sans-serif;font-size:0.78rem;font-weight:700;color:#00122d;margin-bottom:0.4rem;">Mobile Number</label>
+          <div style="display:flex;align-items:center;border:2px solid #008aaa;border-radius:0.75rem;overflow:hidden;margin-bottom:0.6rem;box-sizing:border-box;">
+            <span id="msisdn_country_code" class="country-code" style="padding:0.6rem 0.75rem;background:#f0f9ff;color:#006177;font-family:'Josefin Sans',sans-serif;font-size:0.9rem;font-weight:700;border-right:2px solid #008aaa;white-space:nowrap;">+966</span>
+            <input id="msisdn_input" type="tel" data-i18n-placeholder="popupPlaceholder" placeholder="" maxlength="15" autocomplete="off" style="flex:1;border:none;padding:0.6rem 0.75rem;font-family:'Josefin Sans',sans-serif;font-size:0.9rem;outline:none;color:#00122d;box-sizing:border-box;">
+          </div>
+          <p id="msisdn_invalid" data-i18n="popupErrInvalid" style="display:none;font-size:0.78rem;color:#dc2626;margin:0 0 0.5rem;">Please enter a valid KSA number (+966...) / يرجى إدخال رقم سعودي صحيح (+966...)</p>
+          <p id="msisdn_error" data-i18n="popupErrGeneric" style="display:none;font-size:0.78rem;color:#dc2626;margin:0 0 0.5rem;">Something went wrong. Please try again later.</p>
+          <p id="msisdn_not_subscribed" data-i18n="popupErrNotSubscribed" style="display:none;font-size:0.78rem;color:#d97706;margin:0 0 0.5rem;">You are an inactive subscriber to this service and you cannot access the content now due to insufficient balance!</p>
+          <button id="msisdn_submit" type="submit" data-i18n="popupSubmit" style="width:100%;background:#ff9e03;color:#000;font-family:'Josefin Sans',sans-serif;font-weight:900;font-size:1.1rem;text-transform:uppercase;padding:0.6rem;border-radius:0.75rem;border:none;cursor:pointer;">Play Now</button>
+        </form>
+      </div>
+    </div>
+    <div id="game-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;flex-direction:column;">
+      <button
+        id="close-game"
+        style="position:absolute;top:20px;left:20px;z-index:10000;width:36px;height:36px;background:#ffc800;border:none;border-radius:5px;cursor:pointer;font-size:20px;font-weight:bold;line-height:1;display:flex;align-items:center;justify-content:center;"
+        aria-label="Close game"
+      >
+        X
+      </button>
+      <iframe id="game-iframe" style="width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <main>
+      <section id="section1" style="min-height: 100vh; padding: 100px 20px;">
+        <div class="sec2Part content1" style="text-align: center; margin-bottom: 50px;" data-i18n="moreGamesHeading">
+          More Games
+        </div>
+        
+        <div class="category-filter" style="text-align: center; margin-bottom: 30px;">
+          <button class="filter-btn active" data-category="all" data-i18n="filterAll">All Games</button>
+          <button class="filter-btn" data-category="Top 10 Games" data-i18n="filterTop10">Top 10 Games</button>
+          <button class="filter-btn" data-category="Easy to Play" data-i18n="filterEasyToPlay">Easy to Play</button>
+          <button class="filter-btn" data-category="Arcade" data-i18n="filterArcade">Arcade</button>
+          <button class="filter-btn" data-category="Puzzle" data-i18n="filterPuzzle">Puzzle</button>
+          <button class="filter-btn" data-category="Action" data-i18n="filterAction">Action</button>
+        </div>
+
+        <div id="games-container" class="category-skill" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px;">
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="copyright">
+        Copyright &copy;
+        <span id="copyright_year">
+          <script>document.getElementById('copyright_year').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+        </span>
+        <span data-i18n="copyright">All Rights Reserved by</span>
+        <a class="copyright_link" href="" target="_blank" aria-label="to linkedin">AiGameopedia</a>
+      </div>
+      <div class="endPage">
+        <a href="#section1" class="backToTop" aria-label="to section 1"></a>
+      </div>
+    </footer>
+  </body>
+</html>

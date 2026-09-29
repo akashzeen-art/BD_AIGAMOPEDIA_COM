@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <title>AiGameopedia - প্রবেশ করুন</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="./icons/favicon/favicon.ico">
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    .lp-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+    .lp-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,200,0,0.25);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 0 60px rgba(255,200,0,0.07);
+    }
+    .lp-logo { height: 70px; width: auto; }
+    .lp-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffc800;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .lp-subtitle {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      margin-top: -0.75rem;
+    }
+    .lp-input-row {
+      display: flex;
+      align-items: center;
+      border: 2px solid #ffc800;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      width: 100%;
+    }
+    .lp-prefix {
+      padding: 0.7rem 0.85rem;
+      background: rgba(255,200,0,0.1);
+      color: #ffc800;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-right: 2px solid #ffc800;
+      white-space: nowrap;
+    }
+    .lp-input {
+      flex: 1;
+      border: none !important;
+      background: transparent;
+      padding: 0.7rem 0.85rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.95rem;
+      color: beige;
+      outline: none;
+      caret-color: #ffc800;
+      width: 100%;
+    }
+    .lp-input::placeholder { color: rgba(255,255,255,0.25); font-style: italic; font-size: 0.8rem; }
+    .lp-btn {
+      width: 100%;
+      background: #ffc800;
+      color: #000;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .lp-btn:hover { opacity: 0.88; }
+    .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .lp-error {
+      display: none;
+      color: #dc2626;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .lp-footer {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="webgl"></canvas>
+  <div class="lp-wrap">
+    <div class="lp-card">
+      <img src="./image.png" alt="AiGameopedia" class="lp-logo">
+      <div class="lp-title">গেমস অ্যাক্সেস করুন</div>
+      <p class="lp-subtitle">আপনার বাংলাদেশি মোবাইল নম্বর লিখুন</p>
+
+      <div class="lp-input-row">
+        <span class="lp-prefix">+880</span>
+        <input id="lp_mobile" class="lp-input" type="tel" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="off" inputmode="numeric">
+      </div>
+
+      <p id="lp_error" class="lp-error"></p>
+
+      <button id="lp_btn" class="lp-btn">পরবর্তী →</button>
+
+      <p class="lp-footer">OTP যাচাইয়ের পরে আপনি গেমস অ্যাক্সেস পাবেন</p>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('lp_mobile');
+    const btn   = document.getElementById('lp_btn');
+    const err   = document.getElementById('lp_error');
+
+    // Pre-fill if coming from popup
+    const prefill = sessionStorage.getItem('bd_pending_mobile');
+    if (prefill) input.value = '0' + prefill;
+
+    // Only allow digits
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/g, '');
+    });
+
+    function showError(msg) { err.textContent = msg; err.style.display = 'block'; }
+    function hideError()    { err.style.display = 'none'; }
+
+    function isValidBDNumber(val) {
+      const digits = val.replace(/\D/g, '').replace(/^880/, '').replace(/^0/, '');
+      return /^\d{10}$/.test(digits);
+    }
+
+    btn.addEventListener('click', () => {
+      hideError();
+      const raw = input.value.trim();
+      if (!raw) { showError('মোবাইল নম্বর লিখুন'); return; }
+      if (!isValidBDNumber(raw)) { showError('সঠিক বাংলাদেশি নম্বর লিখুন (যেমন: 01XXXXXXXXX)'); return; }
+
+      const normalized = raw.replace(/^0/, '');
+      sessionStorage.setItem('bd_pending_mobile', normalized);
+
+      window.location.href = './otp.html';
+    });
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+  </script>
+</body>
+</html>

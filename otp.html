@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <title>AiGameopedia - OTP যাচাই</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="./icons/favicon/favicon.ico">
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    .lp-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+    .lp-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,200,0,0.25);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 0 60px rgba(255,200,0,0.07);
+    }
+    .lp-logo { height: 70px; width: auto; }
+    .lp-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffc800;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .lp-subtitle {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      margin-top: -0.75rem;
+    }
+    .lp-subtitle span { color: #ffc800; font-weight: 700; }
+    .otp-boxes {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+    .otp-box {
+      width: 48px;
+      height: 56px;
+      border: 2px solid rgba(255,200,0,0.4);
+      border-radius: 0.6rem;
+      background: rgba(255,200,0,0.05);
+      color: #ffc800;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      caret-color: #ffc800;
+      transition: border-color 0.2s;
+    }
+    .otp-box:focus { border-color: #ffc800; background: rgba(255,200,0,0.1); }
+    .lp-btn {
+      width: 100%;
+      background: #ffc800;
+      color: #000;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .lp-btn:hover { opacity: 0.88; }
+    .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .lp-error {
+      display: none;
+      color: #dc2626;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .resend-row {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+    .resend-btn {
+      background: none;
+      border: none;
+      color: #ffc800;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+    .resend-btn:disabled { color: rgba(255,200,0,0.35); cursor: not-allowed; text-decoration: none; }
+    .back-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      text-align: center;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body>
+  <canvas class="webgl"></canvas>
+  <div class="lp-wrap">
+    <div class="lp-card">
+      <img src="./image.png" alt="AiGameopedia" class="lp-logo">
+      <div class="lp-title">OTP যাচাই</div>
+      <p class="lp-subtitle" id="otp_subtitle">আপনার নম্বরে পাঠানো <span id="otp_mobile_display"></span> OTP লিখুন</p>
+
+      <div class="otp-boxes" id="otp_boxes">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+        <input class="otp-box" type="tel" maxlength="1" inputmode="numeric" autocomplete="off">
+      </div>
+
+      <p id="otp_error" class="lp-error"></p>
+
+      <button id="otp_btn" class="lp-btn">যাচাই করুন</button>
+
+      <div class="resend-row">
+        OTP পাননি? <button id="resend_btn" class="resend-btn">পুনরায় পাঠান</button>
+        <span id="resend_timer"></span>
+      </div>
+
+      <a id="back_link" href="./lp-page.html" class="back-link">← নম্বর পরিবর্তন করুন</a>
+    </div>
+  </div>
+
+  <script>
+    const mobile   = sessionStorage.getItem('bd_pending_mobile');
+
+    // If no mobile in session, send back to lp-page
+    if (!mobile) {
+      window.location.href = './lp-page.html';
+    }
+
+    // Show masked number
+    const display = '+880 ' + (mobile ? '0' + mobile.slice(0, 2) + 'XXXXXXX' + mobile.slice(-2) : '');
+    document.getElementById('otp_mobile_display').textContent = display;
+
+    // back link
+    document.getElementById('back_link').href = './lp-page.html';
+
+    // OTP box auto-advance
+    const boxes = Array.from(document.querySelectorAll('.otp-box'));
+    boxes.forEach((box, i) => {
+      box.addEventListener('input', () => {
+        box.value = box.value.replace(/\D/g, '').slice(-1);
+        if (box.value && i < boxes.length - 1) boxes[i + 1].focus();
+      });
+      box.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !box.value && i > 0) boxes[i - 1].focus();
+        if (e.key === 'Enter') document.getElementById('otp_btn').click();
+      });
+      box.addEventListener('paste', e => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        pasted.split('').forEach((ch, j) => { if (boxes[i + j]) boxes[i + j].value = ch; });
+        const next = Math.min(i + pasted.length, boxes.length - 1);
+        boxes[next].focus();
+      });
+    });
+    boxes[0].focus();
+
+    function getOtp() { return boxes.map(b => b.value).join(''); }
+
+    const errEl = document.getElementById('otp_error');
+    function showError(msg) { errEl.textContent = msg; errEl.style.display = 'block'; }
+    function hideError()    { errEl.style.display = 'none'; }
+
+    // Resend timer
+    let timerInterval;
+    function startResendTimer(seconds) {
+      const resendBtn   = document.getElementById('resend_btn');
+      const timerEl     = document.getElementById('resend_timer');
+      resendBtn.disabled = true;
+      let remaining = seconds;
+      timerEl.textContent = ' (' + remaining + 's)';
+      timerInterval = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          resendBtn.disabled = false;
+          timerEl.textContent = '';
+        } else {
+          timerEl.textContent = ' (' + remaining + 's)';
+        }
+      }, 1000);
+    }
+    startResendTimer(30);
+
+    document.getElementById('resend_btn').addEventListener('click', () => {
+      hideError();
+      boxes.forEach(b => b.value = '');
+      boxes[0].focus();
+      startResendTimer(30);
+      // TODO: call your OTP resend API here
+    });
+
+    document.getElementById('otp_btn').addEventListener('click', () => {
+      hideError();
+      const otp = getOtp();
+      if (otp.length < 6) { showError('৬ সংখ্যার OTP লিখুন'); return; }
+
+      const btn = document.getElementById('otp_btn');
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      // TODO: replace with your real OTP verification API call
+      // For now: save mobile to localStorage and proceed
+      const storageKey = 'aigamopedia_msisdn_';
+      localStorage.setItem(storageKey, mobile);
+      window.location.href = './thankyou.html';
+    });
+  </script>
+</body>
+</html>

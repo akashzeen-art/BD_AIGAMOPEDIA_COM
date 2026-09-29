@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AiGameopedia</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="#303E50">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="author" content="AiGameopedia">
+    <meta name="description" content="AiGameopedia">
+    <meta name="keywords" content="AiGameopedia">
+    <meta name="theme-color" content="#000000">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="icon" href="./icons/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Playfair+Display&family=Roboto+Slab&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <script src="./country.js"></script>
+    <script src="./i18n/en.js"></script>
+    <script src="./i18n/bn.js"></script>
+    <script src="./i18n.js"></script>
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <canvas class="webgl"></canvas>
+    <nav style="display: flex; justify-content: space-between; align-items: center; gap: 50px;">
+      <a class="logo" href="#section1" aria-label="website logo">
+        <img src="./image.png" alt="AiGameopedia logo" style="height: 80px; width: auto;" data-i18n-alt="logoAlt">
+      </a>
+      <div class="navBig">
+        <a href="./index.html" class="navEach" id="navLink1" aria-label="about nav" data-i18n="navHome">Home</a>
+        <a href="./moreGames.html" class="navEach" id="navLink2" aria-label="more games nav" data-i18n="navMoreGames">More Games</a>
+        <a href="./myAccount.html" class="navEach" id="navLink3" aria-label="account nav" data-i18n="navMyAccount">My Account</a>
+        <a href="./termsAndConditions.html" class="navEach" id="navLink4" aria-label="t&c nav" data-i18n="navTC">T & C</a>
+        <button id="langToggle" aria-label="toggle language" onclick="toggleLang()" style="background:transparent;border:2px solid #ffc800;color:#ffc800;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:0.5rem;cursor:pointer;letter-spacing:0.05em;"></button>
+      </div>
+      <div class="navSmall">
+        <div class="hamburger" id="hamburgerBtn">
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
+        <div class="subMenu" id="subMenu">
+          <a href="./index.html" class="navEach" id="navLink5" aria-label="about nav" data-i18n="navHome">Home</a>
+          <a href="./moreGames.html" class="navEach" id="navLink6" aria-label="more games nav" data-i18n="navMoreGames">More Games</a>
+          <a href="./myAccount.html" class="navEach" id="navLink7" aria-label="account nav" data-i18n="navMyAccount">My Account</a>
+          <a href="./termsAndConditions.html" class="navEach" id="navLink8" aria-label="t&c nav" data-i18n="navTC">T & C</a>
+          <button id="langToggleMobile" aria-label="toggle language" onclick="toggleLang()" style="background:transparent;border:2px solid #ffc800;color:#ffc800;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:0.5rem;cursor:pointer;letter-spacing:0.05em;margin-top:0.5rem;"></button>
+        </div>
+    </nav>
+    <script>
+      function toggleLang() {
+        if (typeof window.toggleLang === 'function' && window.toggleLang !== toggleLang) {
+          window.toggleLang();
+          return;
+        }
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('lang') === 'en') params.delete('lang');
+        else params.set('lang', 'en');
+        const qs = params.toString();
+        window.location.href = window.location.pathname + (qs ? '?' + qs : '');
+      }
+      (function setLangBtn() {
+        const isBn = typeof window._isBn !== 'undefined' ? window._isBn : true;
+        const label = isBn ? 'EN' : 'বাংলা';
+        ['langToggle','langToggleMobile'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = label;
+        });
+      })();
+    </script>
+    <!-- Mobile number popup -->
+    <style>
+      #msisdn_input::placeholder { font-size:0.75rem; color:rgba(0,0,0,0.3); font-style:italic; }
+      @keyframes blink-caret { 0%,100%{caret-color:#006177;} 50%{caret-color:transparent;} }
+    </style>
+    <div id="msisdnPopup" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s ease;">
+      <div style="background:#fff;border-radius:1.2rem;width:100%;max-width:360px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,0.4);position:relative;margin:1rem;">
+        <button id="closeMsisdnPopup" aria-label="close popup" style="position:absolute;top:0.75rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#374151;line-height:1;">×</button>
+        <div style="text-align:center;margin-bottom:1.25rem;">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00c5eb,#006177);display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;">
+            <span style="color:#fff;font-size:1.5rem;">🎮</span>
+          </div>
+          <h2 style="font-family:'Josefin Sans',sans-serif;font-weight:900;font-size:1.2rem;text-transform:uppercase;color:#00122d;margin:0;">AiGameopedia</h2>
+          <p style="font-family:'Josefin Sans',sans-serif;font-size:0.8rem;color:rgba(0,0,0,0.5);margin-top:0.25rem;">গেমস খেলতে আপনার মোবাইল নম্বর লিখুন</p>
+        </div>
+        <form id="msisdnForm" onsubmit="return false;">
+          <label style="display:block;font-family:'Josefin Sans',sans-serif;font-size:0.78rem;font-weight:700;color:#00122d;margin-bottom:0.4rem;">মোবাইল নম্বর</label>
+          <div style="display:flex;align-items:center;border:2px solid #008aaa;border-radius:0.75rem;overflow:hidden;margin-bottom:0.6rem;box-sizing:border-box;">
+            <span style="padding:0.6rem 0.75rem;background:#f0f9ff;color:#006177;font-family:'Josefin Sans',sans-serif;font-size:0.9rem;font-weight:700;border-right:2px solid #008aaa;white-space:nowrap;">+880</span>
+            <input id="msisdn_input" type="tel" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="off" inputmode="numeric" style="flex:1;border:none;padding:0.6rem 0.75rem;font-family:'Josefin Sans',sans-serif;font-size:0.9rem;outline:none;color:#00122d;box-sizing:border-box;caret-color:#006177;animation:blink-caret 1s step-end infinite;">
+          </div>
+          <p id="msisdn_invalid" style="display:none;font-size:0.78rem;color:#dc2626;margin:0 0 0.5rem;">সঠিক বাংলাদেশি নম্বর লিখুন (01XXXXXXXXX)</p>
+          <button id="msisdn_submit" type="submit" style="width:100%;background:#ff9e03;color:#000;font-family:'Josefin Sans',sans-serif;font-weight:900;font-size:1.1rem;text-transform:uppercase;padding:0.6rem;border-radius:0.75rem;border:none;cursor:pointer;">এখনই খেলুন</button>
+        </form>
+        <p style="font-family:'Josefin Sans',sans-serif;font-size:0.72rem;color:rgba(0,0,0,0.4);text-align:center;margin-top:0.75rem;">OTP যাচাইয়ের পরে গেমস অ্যাক্সেস পাবেন</p>
+      </div>
+    </div>
+
+    <div id="game-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;flex-direction:column;">
+      <button
+  id="close-game"
+  style="position:absolute;top:20px;right:20px;z-index:10000;padding:4px 10px;background:#ffc800;border:none;border-radius:50%;cursor:pointer;font-size:20px;font-weight:bold;line-height:1;"
+  aria-label="Close game"
+  data-i18n="backToPortal"
+>
+  ✕
+</button>
+      <iframe id="game-iframe" style="width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <main>
+      <section id="section1">
+        <div class="sec1Tit content1" data-i18n="sec1Tagline">Game On, Always</div>
+        <div class="sec1Name content1"></div>
+        <div class="sec1Des content2" data-i18n="sec1Des">Level Up Your Game Discovery</div>
+        <a href="#section2" class="nextButton1 content3" aria-label="to section 2">
+          <span class="next"></span>
+          <span class="next"></span>
+          <span class="next"></span>
+        </a>
+      </section>
+      <section id="section2">
+        <div class="sec2Part content1" data-i18n="sec2NewGames">
+          New Games
+        </div>
+        <div class="lineSec2 content2"></div>
+        <div class="sec2Part content3">
+          <div class="skill" id="skill">
+          </div>
+        </div>
+        <div class="lineSec2 content4"></div>
+        <a href="#section3" class="nextButton2 content6" aria-label="to section 3">
+          <span class="next"></span>
+          <span class="next"></span>
+          <span class="next"></span>
+        </a>
+      </section>
+
+
+      <section id="section3" class="is-visible">
+        <div class="secPortTit content1" data-i18n="sec3Title">Browse By Genre</div>
+        <div class="secPortDes content2" data-i18n="sec3Des">Dive into genres that match your play style...</div>
+
+        <div class="genre-grid content3">
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/top2.jpeg" alt="Top 10">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreTop10">Top 10</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-top-10-games"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/vip11.jpeg" alt="VIP">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreVIP">VIP</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-vip-games"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/leaderboard.jpeg" alt="Leaderboard">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreLeaderboard">Games with Leaderboard</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-games-with-leaderboard"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/brain11.jpeg" alt="Train Brain">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreTrainBrain">Train your Brain</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-train-your-brain"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/soothing.jpeg" alt="Soothing">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreSoothing">Soothing</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-soothing"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/break.jpeg" alt="Quick Break">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreQuickBreak">Quick break</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-quick-break-at-work"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/sports.jpeg" alt="Sports">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreSports">Sports</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-sports"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/multiplayer.jpeg" alt="Multiplayer">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreMultiplayer">Multiplayer</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-multiplayer"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+          <div class="genre-card gameProject">
+            <img class="genre-img" src="./images/break2.jpeg" alt="All Games">
+            <div class="genre-overlay">
+              <span class="genre-title" data-i18n="genreAllGames">All Games</span>
+              <a class="genre-btn seemoreButton" href="#" data-target="category-all-games"><span data-i18n="exploreGames">&lt; Explore games &gt;</span></a>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="#section5" class="nextButton2 content4" aria-label="to section 5">
+          <span class="next"></span>
+          <span class="next"></span>
+          <span class="next"></span>
+        </a>
+      </section>
+
+
+      <section id="section4">
+        <div class="secPortFrame content3" id="game-category-container">
+        </div>
+
+        <div class="content4 other-cat-container">
+          <div class="catTitle" data-i18n="moreGamesTitle">More Games...</div>
+          <div class="category-skill-other" id="game-category-container-other">
+          </div>
+        </div>
+      </section>
+
+
+      <section id="section5">
+        <div class="sec5Tit content1">
+          
+        </div>
+        <div class="secContact content2" >
+
+        </div>
+
+        <div class="hidden_layer contact_form_wrap" id="contactForm">
+          <div class="contact_form_frame">
+            <button class="close_button" id="closeContactForm" aria-label="close contact form"></button>
+            <div class="contact_form">
+              <input type="text" id="contact_name" value="" data-i18n-placeholder="contactName" placeholder="Name" autocomplete="off">
+              <input type="text" id="contact_email" value="" data-i18n-placeholder="contactEmail" placeholder="Email" autocomplete="off">
+              <input type="text" id="contact_subject" value="" data-i18n-placeholder="contactSubject" placeholder="Subject" autocomplete="off">
+              <textarea rows="6" id="contact_message" value="" data-i18n-placeholder="contactMessage" placeholder="Message" autocomplete="off"></textarea>
+            </div>
+            <p class="contact_form_missing contact_form_hide" data-i18n="contactMissing">Please provide all required information</p>
+            <p class="contact_form_mail_inv contact_form_hide" data-i18n="contactInvalidEmail">Please provide a valid email</p>
+            <p class="contact_form_mail_error contact_form_hide" data-i18n="contactError">Something went wrong, please try again later</p>
+            <p class="contact_form_success contact_form_hide" data-i18n-html="contactSuccess">I've received your mail.<br>Thank you for reaching out.<br>I will reply asap!</p>
+            <button class="secMail" id="contact_form_submit" aria-label="send email">
+              <p data-i18n="contactSend">Send</p>
+              <div class="loading_dots">
+                <span id="loading_dot_1"></span>
+                <span id="loading_dot_2"></span>
+                <span id="loading_dot_3"></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <footer>
+      <div class="copyright">
+        Copyright &copy;
+        <span id="copyright_year">
+          <script>document.getElementById('copyright_year').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+        </span>
+        <span data-i18n="copyright">All Rights Reserved by</span>
+        <a class="copyright_link" href="" target="_blank" aria-label="to linkedin">AiGameopedia</a>
+      </div>
+      <div class="endPage">
+        <button class="sound" id="soundButton" aria-label="toggle sound"></button>
+        <a href="#section1" class="backToTop" aria-label="to section 1"></a>
+      </div>
+      <a href="#section1" class="moveUp" aria-label="scroll to top"></a>
+    </footer>
+  </body>
+</html>

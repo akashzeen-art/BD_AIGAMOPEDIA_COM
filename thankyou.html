@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <title>AiGameopedia - ধন্যবাদ!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="./icons/favicon/favicon.ico">
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    .lp-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+    }
+    .lp-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,200,0,0.25);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 0 60px rgba(255,200,0,0.07);
+      text-align: center;
+    }
+    .lp-logo { height: 70px; width: auto; }
+    .ty-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .ty-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #22c55e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .ty-msg {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+    .ty-msg strong { color: #ffc800; }
+    .ty-progress-wrap {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .ty-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ffc800, #22c55e);
+      border-radius: 99px;
+      width: 0%;
+      transition: width linear;
+    }
+    .ty-redirect-msg {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+    }
+    .ty-redirect-msg span { color: #ffc800; font-weight: 700; }
+    .ty-btn {
+      width: 100%;
+      background: #ffc800;
+      color: #000;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      display: block;
+    }
+    .ty-btn:hover { opacity: 0.88; }
+  </style>
+</head>
+<body>
+  <canvas class="webgl"></canvas>
+  <div class="lp-wrap">
+    <div class="lp-card">
+      <img src="./image.png" alt="AiGameopedia" class="lp-logo">
+
+      <div class="ty-icon">✓</div>
+
+      <div class="ty-title">ধন্যবাদ!</div>
+
+      <p class="ty-msg">
+        আপনার নম্বর সফলভাবে যাচাই হয়েছে।<br>
+        <strong>AiGameopedia</strong>-তে আপনাকে স্বাগতম!<br>
+        এখন আপনি সমস্ত গেমস অ্যাক্সেস করতে পারবেন।
+      </p>
+
+      <div class="ty-progress-wrap">
+        <div class="ty-progress-bar" id="ty_progress"></div>
+      </div>
+      <p class="ty-redirect-msg"><span id="ty_countdown">5</span> সেকেন্ডে স্বয়ংক্রিয়ভাবে রিডাইরেক্ট হবে...</p>
+
+      <a id="ty_btn" href="./index.html" class="ty-btn">এখনই গেমস খেলুন →</a>
+    </div>
+  </div>
+
+  <script>
+    const dest    = './index.html';
+
+    document.getElementById('ty_btn').href = dest;
+
+    // Animated countdown + progress bar
+    const SECONDS   = 3;
+    const bar       = document.getElementById('ty_progress');
+    const countdown = document.getElementById('ty_countdown');
+
+    bar.style.transitionDuration = SECONDS + 's';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { bar.style.width = '100%'; });
+    });
+
+    let remaining = SECONDS;
+    countdown.textContent = remaining;
+    const interval = setInterval(() => {
+      remaining--;
+      countdown.textContent = remaining;
+      if (remaining <= 0) {
+        clearInterval(interval);
+        // Pass pending game via hash so index.html can open it
+        const pendingGame = sessionStorage.getItem('bd_pending_game');
+        sessionStorage.removeItem('bd_pending_game');
+        window.location.href = dest + (pendingGame ? '#game=' + encodeURIComponent(pendingGame) : '');
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
