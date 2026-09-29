@@ -12,3 +12,10 @@ dist/
 .env
 .env.*
 .DS_Store
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.env
+.env.*
+.DS_Store

@@ -1,13 +1,12 @@
 {
   "name": "AiGameopedia",
   "version": "1.0.0",
-  "description": "AiGameopedia - Game portal with EN/AR support",
+  "description": "AiGameopedia - Game portal",
   "engines": {
     "node": ">=16.x"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2"
