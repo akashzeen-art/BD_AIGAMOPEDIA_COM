@@ -1,12 +1,18 @@
 {
   "version": 2,
+  "outputDirectory": ".",
+  "builds": [
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
+    }
+  ],
   "rewrites": [
     { "source": "/lp-page", "destination": "/lp-page.html" },
     { "source": "/otp", "destination": "/otp.html" },
     { "source": "/thankyou", "destination": "/thankyou.html" },
     { "source": "/moreGames", "destination": "/moreGames.html" },
     { "source": "/myAccount", "destination": "/myAccount.html" },
-    { "source": "/termsAndConditions", "destination": "/termsAndConditions.html" },
-    { "source": "/", "destination": "/index.html" }
+    { "source": "/termsAndConditions", "destination": "/termsAndConditions.html" }
   ]
 }
